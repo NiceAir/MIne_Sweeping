@@ -21,7 +21,7 @@ void PutMine(char mine[MROW][MCOL], const int row, const int col, int Fx, int Fy
 	int x=0, y=0;
 	int ss=0;
 
-	*count = row + (int)pow(2,(col/4))-3;			//雷数   一级： 14颗      二级：32颗    三级：88颗
+	*count = row + (int)pow(2,(col/4));			//雷数   一级： 12颗      二级：32颗    三级：88颗
 
 	for (i=0; i<*count; i++)
 	{
@@ -44,6 +44,12 @@ void Init_Board(char mine[MROW][MCOL], char show[MROW][MCOL], int *row, int *col
 	printf("请选择难度（  1：容易  2：一般  3：困难 ）>");
 	scanf("%d", &choose);
 	while((c = getchar()) != '\n' && c != EOF);
+	while(choose!=1 && choose!=2 && choose!=3)
+	{
+		printf("输入有误，请重新选择难度（  1：容易  2：一般  3：困难 ）>");
+		scanf("%d", &choose);
+		while((c = getchar()) != '\n' && c != EOF);
+	}
 	switch (choose){
 		case 1:Create_Board(mine,show, EAZY, row, col); break;
 		case 2:Create_Board(mine, show,ORDINARY, row, col); break;
@@ -119,38 +125,36 @@ static void Mark_MineCount(char mine[MROW][MCOL], char show[MROW][MCOL], const i
 		else show[x][y] = c;
 		mine[x][y] = '-';
 	}
-	
-
 }
 
 int expand(const char mine[MROW][MCOL], char show[MROW][MCOL], const int row, const int col, const int x, const int y)
 {
 	
-		if (  Check_Legal(row, col, x, y) !=1 )
-		{
-			return -1;
-		}
-		else if (mine[x][y] == '1' || mine[x][y] == '-')
-		{
-			return -2;
-		}
+	if (  Check_Legal(row, col, x, y) !=1 )
+	{
+		return -1;
+	}
+	else if (mine[x][y] == '1' || mine[x][y] == '-')
+	{
+		return -2;
+	}
 
-		else
+	else
+	{
+		Mark_MineCount(mine, show, row, col, x, y);
+		if(show[x][y] == ' ')
 		{
-			Mark_MineCount(mine, show, row, col, x, y);
-			if(show[x][y] == ' ')
-			{
-				expand(mine, show, row, col, x-1, y-1);
-				expand(mine, show, row, col, x-1, y);
-				expand(mine, show, row, col, x-1, y+1);
-				expand(mine, show, row, col, x, y-1);
-				expand(mine, show, row, col, x, y+1);
-				expand(mine, show, row, col, x+1, y-1);
-				expand(mine, show, row, col, x+1, y);
-				expand(mine, show, row, col, x+1, y+1);
-			}
+			expand(mine, show, row, col, x-1, y-1);
+			expand(mine, show, row, col, x-1, y);
+			expand(mine, show, row, col, x-1, y+1);
+			expand(mine, show, row, col, x, y-1);
+			expand(mine, show, row, col, x, y+1);
+			expand(mine, show, row, col, x+1, y-1);
+			expand(mine, show, row, col, x+1, y);
+			expand(mine, show, row, col, x+1, y+1);
 		}
-		return 0;
+	}
+	return 0;
 }
 
 

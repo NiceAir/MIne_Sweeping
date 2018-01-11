@@ -19,6 +19,7 @@ AGAIN :	Init_Board(mine,show, &row, &col);
 	{
 		printf("选择位置：>");
 		scanf("%d%d", &Fx, &Fy);
+		while((c = getchar()) != '\n' && c != EOF);     //清除键盘缓冲区的万能写法
 		if ( Check_Legal(row, col, Fx, Fy) !=1)
 		{
 			printf("输入位置不合法，再次");
@@ -26,7 +27,6 @@ AGAIN :	Init_Board(mine,show, &row, &col);
 		}
 		break;
 	}
-	while((c = getchar()) != '\n' && c != EOF);     //清除键盘缓冲区的万能写法
 	PutMine(mine, row, col, Fx, Fy, &count);
 	while(Player_Do(mine, show, row, col, dead, &Fx, &Fy) ==0)
 	{

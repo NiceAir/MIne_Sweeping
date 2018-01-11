@@ -9,7 +9,7 @@
 #define  MCOL 32
 
 enum level{
-	EAZY = 4,
+	EAZY = 8,
 	ORDINARY = 16,
 	DIFFICUTE = 24,
 };
